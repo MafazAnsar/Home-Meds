@@ -1,0 +1,6 @@
+{
+  "appId": "com.homemeds.app",
+  "appName": "Home Meds",
+  "webDir": "www",
+  "android": { "backgroundColor": "#0e7490" }
+}
