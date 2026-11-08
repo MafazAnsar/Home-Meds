@@ -1,0 +1,181 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#c4572e"><title>Home Meds</title>
+<style>
+:root{--bg:#fbf5ec;--card:#fffdf8;--tx:#3a2e2a;--mu:#8a7a70;--pr:#c4572e;--on:#fff;--ok:#3f8f5b;--wa:#c27c0e;--er:#c0392b;--bd:#eadfce}
+@media(prefers-color-scheme:dark){:root{--bg:#1c1613;--card:#2a211c;--tx:#f3e9df;--mu:#b3a396;--pr:#f08a5d;--on:#2b1409;--ok:#6fcf97;--wa:#f2c14e;--er:#ff7a6b;--bd:#3d3028}}
+*{box-sizing:border-box}body{margin:0;font:16px Georgia,'Times New Roman',serif;background:var(--bg);color:var(--tx);padding-bottom:130px}
+button,input,select,textarea{font-family:system-ui,sans-serif}
+header{padding:calc(18px + env(safe-area-inset-top)) 18px 6px;display:flex;justify-content:space-between;align-items:flex-end;max-width:680px;margin:auto}
+header small{color:var(--mu);font:13px system-ui,sans-serif}h1{font-size:32px;margin:0}header button{background:var(--card);border:0;border-radius:50%;width:42px;height:42px;font-size:19px;margin-left:8px;box-shadow:0 2px 8px #0002}
+main{padding:12px 16px;max-width:680px;margin:auto}h3.sec{font-size:17px;margin:18px 4px 8px}
+.alert{padding:10px 14px;border-radius:14px;margin-bottom:6px;font:14px system-ui,sans-serif;border-left:5px solid}.alert.w{background:#fef3c7;border-color:#d97706;color:#78350f}.alert.e{background:#fee2e2;border-color:#dc2626;color:#7f1d1d}
+input,select,textarea{width:100%;padding:11px;border:1px solid var(--bd);border-radius:14px;background:var(--card);color:var(--tx);font:inherit;font-size:15px;margin:3px 0 8px}label{font:12px system-ui,sans-serif;color:var(--mu)}
+.chips{display:flex;gap:6px;overflow-x:auto;padding-bottom:8px}.chip{white-space:nowrap;padding:7px 14px;border-radius:99px;border:0;background:var(--card);color:var(--tx);font-size:14px;box-shadow:0 1px 5px #0001}.chip.on{background:var(--pr);color:var(--on)}
+.card,.dose{display:flex;align-items:center;gap:12px;background:var(--card);border-radius:20px;padding:12px;margin-bottom:10px;box-shadow:0 2px 10px #0000001a}
+.th{width:54px;height:54px;border-radius:14px;background:var(--bg);object-fit:cover;display:flex;align-items:center;justify-content:center;font-size:26px;flex:none}.i{flex:1;min-width:0}.i b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.sm{font:12px system-ui,sans-serif;color:var(--mu)}
+.av{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font:700 18px system-ui,sans-serif;flex:none}
+.prog{background:var(--pr);color:var(--on);border-radius:22px;padding:16px;margin-bottom:6px}.prog .sm{color:inherit;opacity:.85}.pb{height:8px;background:#fff5;border-radius:9px;margin-top:10px;overflow:hidden}.pb i{display:block;height:100%;background:#fff;border-radius:9px}
+.dose.dn{opacity:.55}.dose.late{box-shadow:inset 0 0 0 2px var(--wa)}.ck{width:48px;height:48px;border-radius:50%;border:2px solid var(--pr);background:none;color:var(--pr);font-size:24px;flex:none}.dn .ck{background:var(--ok);border-color:var(--ok);color:#fff}
+.bd{display:inline-block;padding:2px 9px;border-radius:99px;font:600 11px system-ui,sans-serif;color:#fff;margin:3px 3px 0 0}.ok{background:var(--ok)}.wa{background:var(--wa)}.er{background:var(--er)}
+nav{position:fixed;left:0;right:0;bottom:0;display:flex;background:var(--card);padding-bottom:env(safe-area-inset-bottom);box-shadow:0 -2px 14px #0002;z-index:6}nav button{flex:1;border:0;background:none;padding:10px 0 8px;font-size:22px;color:var(--mu);display:flex;flex-direction:column;align-items:center}nav button span{font:11px system-ui,sans-serif;margin-top:2px}nav button.on{color:var(--pr)}nav button.on span{font-weight:700}
+.fab{position:fixed;right:18px;bottom:calc(78px + env(safe-area-inset-bottom));width:58px;height:58px;border-radius:20px;border:0;background:var(--pr);color:var(--on);font-size:30px;box-shadow:0 4px 12px #0005;z-index:7}
+dialog{border:0;border-radius:24px;padding:18px;width:min(94vw,560px);max-height:92vh;background:var(--bg);color:var(--tx)}dialog::backdrop{background:#0008}
+.btn{padding:11px 16px;border-radius:14px;border:0;background:var(--card);color:var(--tx);font-size:15px;margin:3px 3px 3px 0;box-shadow:0 1px 5px #0002}.btn.p{background:var(--pr);color:var(--on)}.btn.d{color:var(--er)}
+.ph{display:flex;gap:6px;flex-wrap:wrap}.ph div{position:relative}.ph img{width:80px;height:80px;object-fit:cover;border-radius:12px}.ph u{position:absolute;top:0;right:0;background:#000a;color:#fff;border-radius:50%;width:20px;height:20px;text-align:center;text-decoration:none;font-size:13px}
+.big img{width:100%;border-radius:14px;margin:4px 0}.g2{display:grid;grid-template-columns:1fr 1fr;gap:8px}.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.row{display:flex;justify-content:space-between;gap:10px;padding:7px 0;border-bottom:1px solid var(--bd)}.row span:last-child{text-align:right}.empty{text-align:center;color:var(--mu);padding:40px 10px}
+#lk{position:fixed;inset:0;background:var(--bg);z-index:99;display:none;flex-direction:column;align-items:center;justify-content:center;gap:10px}#lk input{width:200px;text-align:center;font-size:24px}
+</style></head><body>
+<header><div><small id="dt"></small><h1 id="ttl"></h1></div><div><button id="bell">🔔</button><button id="gear">⚙️</button></div></header>
+<main><div id="alerts"></div><div id="view"></div></main>
+<nav id="tabs"><button data-t="today">🌤️<span>Today</span></button><button data-t="meds">💊<span>Medicines</span></button><button data-t="people">👨‍👩‍👧<span>Family</span></button></nav>
+<button class="fab" id="add">+</button><dialog id="dlg"></dialog>
+<div id="lk"><h2>🔒 Home Meds</h2><input id="pin" type="password" inputmode="numeric" placeholder="PIN"><button class="btn p" id="ul">Unlock</button></div>
+<script>
+const FORMS=['Tablet','Capsule','Syrup','Drops','Injection','Cream/Ointment','Inhaler','Other'];
+const $=s=>document.querySelector(s),esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const show=()=>{const d=$('#dlg');if(!d.open)d.showModal()};
+const ls={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch{return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch{}}};
+const DB=new Promise((res,rej)=>{const r=indexedDB.open('hm',1);r.onupgradeneeded=()=>r.result.createObjectStore('d',{keyPath:'id'});r.onsuccess=()=>res(r.result);r.onerror=rej});
+const tx=async(m,f)=>{const d=await DB;return new Promise((res,rej)=>{const t=d.transaction('d',m);const r=f(t.objectStore('d'));t.oncomplete=()=>res(r.result);t.onerror=rej})};
+const getAll=()=>tx('readonly',s=>s.getAll()),put=i=>tx('readwrite',s=>s.put(i)),del=id=>tx('readwrite',s=>s.delete(id));
+let P=[],M=[],pf='all',term='',draft=null,tab='today';const DAY=864e5;
+const today=()=>{const d=new Date();d.setHours(0,0,0,0);return d};
+const fd=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+const dl=e=>e?Math.round((new Date(e+'T00:00')-today())/DAY):null;
+const fmt=s=>s?new Date(s+'T00:00').toLocaleDateString(undefined,{day:'numeric',month:'short',year:'numeric'}):'';
+const pname=id=>(P.find(p=>p.id==id)||{}).name||'Household / anyone';
+const hasQ=m=>m.qty!==''&&m.qty!=null;
+const PAL=['#e76f51','#2a9d8f','#8e6bbf','#e9a23b','#3f7cac','#d1558a','#6a994e'];
+const pcol=id=>{const i=P.findIndex(p=>p.id==id);return i<0?'#9a8c7e':(P[i].c||PAL[i%PAL.length])};
+const ava=id=>{const p=P.find(x=>x.id==id);return `<span class="av" style="background:${pcol(id)}">${p?esc((p.name.trim()[0]||'?').toUpperCase()):'🏠'}</span>`};
+function flags(m){const f=[],d=dl(m.expiry);if(d!==null)f.push(d<0?['er','Expired']:d<=30?['wa','Expires in '+d+'d']:null);
+ if(hasQ(m))f.push(+m.qty<=0?['er','Out of stock']:+m.qty<=(+m.thr||0)?['wa','Low stock']:null);return f.filter(Boolean)}
+const shrink=f=>new Promise(r=>{const i=new Image();i.onload=()=>{const s=Math.min(1,900/Math.max(i.width,i.height)),c=document.createElement('canvas');c.width=i.width*s;c.height=i.height*s;c.getContext('2d').drawImage(i,0,0,c.width,c.height);r(c.toDataURL('image/jpeg',.7))};i.src=URL.createObjectURL(f)});
+async function load(){const a=await getAll();P=a.filter(x=>x.k=='p');M=a.filter(x=>x.k=='m');render();sync();autoBackup()}
+const slots=()=>{const d=fd(new Date()),o=[];for(const m of M){if(m.end&&dl(m.end)<0)continue;for(const t of m.times||[])o.push({m,t,key:d+' '+t,done:!!(m.done&&m.done[d+' '+t])})}return o.sort((x,y)=>x.t<y.t?-1:1)};
+function vToday(){const S=slots(),n=S.filter(x=>x.done).length,w=new Date(),hm=String(w.getHours()).padStart(2,'0')+':'+String(w.getMinutes()).padStart(2,'0'),prn=M.filter(m=>!(m.times||[]).length&&!(m.end&&dl(m.end)<0));
+ let h=S.length?`<div class="prog"><b>${n} of ${S.length}</b> doses done today<div class="pb"><i style="width:${n/S.length*100}%"></i></div></div>`:`<div class="prog"><b>No scheduled doses</b><div class="sm">Add reminder times to a medicine and its doses will appear here.</div></div>`;
+ h+=[['🌅 Morning',S.filter(x=>x.t<'12:00')],['☀️ Afternoon',S.filter(x=>x.t>='12:00'&&x.t<'17:00')],['🌙 Evening',S.filter(x=>x.t>='17:00')]].filter(g=>g[1].length).map(g=>`<h3 class="sec">${g[0]}</h3>`+g[1].map(x=>`<div class="dose ${x.done?'dn':x.t<hm?'late':''}">${ava(x.m.pid)}<div class="i"><b>${esc(x.m.name)} ${esc(x.m.strength)}</b><div class="sm">${x.t} · ${esc(pname(x.m.pid))}${x.m.dose?' · '+esc(x.m.dose):''}</div></div><button class="ck" data-tk="${x.m.id}~${x.key}">${x.done?'✔':''}</button></div>`).join('')).join('');
+ if(prn.length)h+='<h3 class="sec">💊 As needed</h3>'+prn.map(m=>`<div class="dose">${ava(m.pid)}<div class="i"><b>${esc(m.name)} ${esc(m.strength)}</b><div class="sm">${esc(pname(m.pid))}${hasQ(m)?' · '+m.qty+' '+esc(m.unit||'left'):''}</div></div><button class="ck" data-prn="${m.id}">＋</button></div>`).join('');return h}
+function medList(){const t=term.toLowerCase(),L=M.filter(m=>(pf=='all'||(pf=='hh'?!m.pid:m.pid==pf))&&(!t||[m.name,m.doctor,m.purpose,m.loc,pname(m.pid)].join(' ').toLowerCase().includes(t))).sort((a,b)=>a.name.localeCompare(b.name));
+ return L.length?L.map(m=>`<div class="card" data-id="${m.id}">${m.photos&&m.photos[0]?`<img class="th" src="${m.photos[0]}">`:ava(m.pid)}<div class="i"><b>${esc(m.name)} ${esc(m.strength)}</b><div class="sm">For: ${esc(pname(m.pid))}${hasQ(m)?' · '+m.qty+' '+esc(m.unit||'left'):''}${m.expiry?' · exp '+fmt(m.expiry):''}</div>${flags(m).map(f=>`<span class="bd ${f[0]}">${f[1]}</span>`).join('')}</div></div>`).join(''):'<div class="empty">No medicines here yet.<br>Tap + to add one.</div>'}
+const vMeds=()=>`<input id="q" placeholder="Search medicine, doctor, purpose…" value="${esc(term)}"><div class="chips">${[['all','All'],...P.map(p=>[p.id,p.name]),['hh','Household']].map(c=>`<button class="chip ${c[0]==pf?'on':''}" data-p="${esc(c[0])}">${esc(c[1])}</button>`).join('')}</div><div id="list">${medList()}</div>`;
+const vPeople=()=>(P.map(p=>{const n=M.filter(m=>m.pid==p.id).length;return `<div class="card" data-pc="${p.id}">${ava(p.id)}<div class="i"><b>${esc(p.name)}</b><div class="sm">${esc(p.rel||'Family member')} · ${n} medicine${n==1?'':'s'}</div></div><span>›</span></div>`}).join('')||'<div class="empty">Add the people whose medicines you track.</div>')+'<button class="btn p" id="addp" style="width:100%;margin-top:6px">＋ Add / manage people</button>';
+function render(){
+ $('#ttl').textContent={today:'Today',meds:'Medicines',people:'Family'}[tab];$('#dt').textContent=new Date().toLocaleDateString(undefined,{weekday:'long',day:'numeric',month:'long'});
+ document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.t==tab));$('#add').style.display=tab=='meds'?'block':'none';
+ $('#alerts').innerHTML=tab=='people'?'':M.flatMap(m=>flags(m).map(f=>`<div class="alert ${f[0]=='er'?'e':'w'}" data-id="${m.id}">${f[0]=='er'?'⛔':'⚠️'} <b>${esc(m.name)}</b>: ${f[1]}</div>`)).join('');
+ $('#view').innerHTML=(tab=='today'?vToday():tab=='meds'?vMeds():vPeople())+'<p class="sm" style="text-align:center;margin-top:18px">Reference only. Always follow your doctor\'s or pharmacist\'s instructions.</p>'}
+async function take(m,key){const ts=Date.now();m.log=[...(m.log||[]),ts].slice(-60);m.done=m.done||{};if(key)m.done[key]=ts;
+ if(hasQ(m)){const was=+m.qty;m.qty=Math.max(0,+(was-(+m.per||1)).toFixed(2));if(was>(+m.thr||0)&&m.qty<=(+m.thr||0))nowNote('Low stock: '+m.name,m.qty+' '+(m.unit||'')+' left. Time to refill.')}
+ const cut=fd(new Date(Date.now()-7*DAY));for(const k in m.done)if(k.slice(0,10)<cut)delete m.done[k];await put(m);await load()}
+async function untake(m,key){const ts=m.done&&m.done[key];if(!ts)return;delete m.done[key];m.log=(m.log||[]).filter(t=>t!==ts);if(hasQ(m))m.qty=+(+m.qty+(+m.per||1)).toFixed(2);await put(m);await load()}
+function slot(v){const[id,key]=v.split('~'),m=M.find(x=>x.id==id);if(m)(m.done&&m.done[key])?untake(m,key):take(m,key)}
+function form(m){const e=!!m;
+ if(!P.length&&!e&&!confirm('No family members added yet. Add medicines for "Household / anyone" only?\n(Tap Cancel, then use the 👥 button to add people first.)'))return;
+ m=m||{name:'',strength:'',form:FORMS[0],pid:pf!='all'&&pf!='hh'?pf:'',doctor:'',purpose:'',dose:'',per:1,qty:'',unit:'tablets',thr:5,expiry:'',times:[],end:'',loc:'',notes:'',photos:[],log:[]};draft=JSON.parse(JSON.stringify(m));const T=m.times||[];
+ $('#dlg').innerHTML=`<h3 style="margin-top:0">${e?'Edit':'Add'} medicine</h3><form id="f">
+ <label>Medicine name *</label><input name="name" required value="${esc(m.name)}">
+ <div class="g2"><div><label>Strength</label><input name="strength" placeholder="500 mg" value="${esc(m.strength)}"></div><div><label>Form</label><select name="form">${FORMS.map(c=>`<option ${c==m.form?'selected':''}>${c}</option>`).join('')}</select></div></div>
+ <label>Prescribed to</label><select name="pid"><option value="">Household / anyone (OTC)</option>${P.map(p=>`<option value="${p.id}" ${p.id==m.pid?'selected':''}>${esc(p.name)}</option>`).join('')}</select>
+ <div class="g2"><div><label>Prescribed by (doctor)</label><input name="doctor" value="${esc(m.doctor)}"></div><div><label>Purpose</label><input name="purpose" value="${esc(m.purpose)}"></div></div>
+ <label>Dosage instructions</label><input name="dose" placeholder="1 tablet twice daily after food" value="${esc(m.dose)}">
+ <div class="g3"><div><label>Stock now</label><input type="number" name="qty" min="0" step="any" value="${esc(m.qty)}"></div><div><label>Unit</label><input name="unit" value="${esc(m.unit)}"></div><div><label>Per dose</label><input type="number" name="per" min="0" step="any" value="${esc(m.per)}"></div></div>
+ <div class="g2"><div><label>Low-stock alert at</label><input type="number" name="thr" min="0" value="${esc(m.thr)}"></div><div><label>Expiry date</label><input type="date" name="expiry" value="${esc(m.expiry)}"></div></div>
+ <label>Daily reminder times (optional)</label><div class="g3">${[0,1,2].map(i=>`<input type="time" name="t${i}" value="${esc(T[i]||'')}">`).join('')}</div>
+ <div class="g2"><div><label>Course ends (optional)</label><input type="date" name="end" value="${esc(m.end)}"></div><div><label>Stored at</label><input name="loc" placeholder="Kitchen shelf" value="${esc(m.loc)}"></div></div>
+ <label>Notes</label><textarea name="notes" rows="2">${esc(m.notes)}</textarea>
+ <label>Photos (box, strip, prescription)</label><div class="ph" id="ph"></div><input type="file" id="fl" accept="image/*" multiple>
+ <button class="btn p">Save</button><button type="button" class="btn" id="cx">Cancel</button></form>`;
+ phs();show();$('#cx').onclick=()=>$('#dlg').close();
+ $('#fl').onchange=async ev=>{for(const f of ev.target.files)draft.photos.push(await shrink(f));ev.target.value='';phs()};
+ $('#f').onsubmit=async ev=>{ev.preventDefault();const d=new FormData(ev.target),o={...draft,k:'m'};
+  ['name','strength','form','pid','doctor','purpose','dose','unit','expiry','end','loc','notes'].forEach(k=>o[k]=(d.get(k)||'').trim());
+  o.qty=d.get('qty')===''?'':+d.get('qty');o.per=+d.get('per')||1;o.thr=+d.get('thr')||0;o.times=[0,1,2].map(i=>d.get('t'+i)).filter(Boolean).sort();o.id=o.id||Date.now()+'';await put(o);$('#dlg').close();load()}}
+function phs(){$('#ph').innerHTML=draft.photos.map((p,n)=>`<div><img src="${p}"><u href="#" data-x="${n}">×</u></div>`).join('')}
+function detail(id){const m=M.find(x=>x.id==id);if(!m)return;
+ $('#dlg').innerHTML=`<h3 style="margin-top:0">${esc(m.name)} ${esc(m.strength)}</h3>${flags(m).map(f=>`<span class="bd ${f[0]}">${f[1]}</span>`).join('')}
+ ${[['Prescribed to',pname(m.pid)],['Doctor',m.doctor],['Purpose',m.purpose],['Dosage',m.dose],['Form',m.form],['Stock',hasQ(m)?m.qty+' '+m.unit:''],['Expires',fmt(m.expiry)],['Reminders',(m.times||[]).join(', ')],['Course ends',fmt(m.end)],['Stored at',m.loc]].filter(r=>r[1]).map(r=>`<div class="row"><span class="sm">${r[0]}</span><span>${esc(r[1])}</span></div>`).join('')}
+ ${m.notes?`<p>${esc(m.notes)}</p>`:''}<div class="big">${(m.photos||[]).map(p=>`<img src="${p}">`).join('')}</div>
+ ${m.log&&m.log.length?`<p class="sm">Recent doses: ${m.log.slice(-5).reverse().map(t=>new Date(t).toLocaleString(undefined,{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'})).join(' · ')}</p>`:''}
+ <div><button class="btn p" id="tk">✔ Dose taken</button><button class="btn" id="rf">➕ Refill</button><button class="btn" id="ed">Edit</button><button class="btn d" id="dl">Delete</button><button class="btn" id="cl">Close</button></div>`;
+ show();$('#cl').onclick=()=>$('#dlg').close();$('#ed').onclick=()=>form(m);
+ $('#tk').onclick=async()=>{await take(m,null);detail(id)};
+ $('#rf').onclick=async()=>{const n=parseFloat(prompt('How many '+(m.unit||'units')+' to add?'));if(n>0){m.qty=(+m.qty||0)+n;await put(m);await load();detail(id)}};
+ $('#dl').onclick=async()=>{if(confirm('Delete '+m.name+'?')){await del(m.id);$('#dlg').close();load()}}}
+function people(){
+ $('#dlg').innerHTML=`<h3 style="margin-top:0">👥 Family members</h3>${P.map(p=>`<div class="row"><span>${esc(p.name)} <span class="sm">${esc(p.rel)}</span></span><span><button class="btn d" data-dp="${p.id}">✕</button></span></div>`).join('')||'<p class="sm">No one added yet.</p>'}
+ <div class="g2" style="margin-top:10px"><div><label>Name</label><input id="pn"></div><div><label>Relation (optional)</label><input id="pr" placeholder="Father, Son…"></div></div>
+ <button class="btn p" id="pa">Add person</button><button class="btn" id="cl">Close</button>`;show();$('#cl').onclick=()=>$('#dlg').close();
+ $('#pa').onclick=async()=>{const n=$('#pn').value.trim();if(!n)return;await put({id:'p'+Date.now(),k:'p',name:n,rel:$('#pr').value.trim(),c:PAL[P.length%PAL.length]});await load();people()}}
+const NAT=!!(window.Capacitor&&window.Capacitor.isNativePlatform&&window.Capacitor.isNativePlatform());
+const PL=n=>window.Capacitor&&window.Capacitor.Plugins&&window.Capacitor.Plugins[n];
+const hid=s=>{let h=0;for(const c of s)h=(h*31+c.charCodeAt(0))|0;return Math.abs(h)%2000000000+1};
+async function nowNote(t,b){const LN=PL('LocalNotifications');if(NAT&&LN&&ls.get('notif',false))try{await LN.schedule({notifications:[{id:hid(t+Date.now()),channelId:'meds',title:t,body:b,schedule:{at:new Date(Date.now()+1500)}}]})}catch{}}
+async function sync(){const LN=PL('LocalNotifications');if(!NAT||!LN||!ls.get('notif',false))return;
+ try{await LN.createChannel({id:'meds',name:'Medicine reminders',importance:4,vibration:true});
+ const p=await LN.getPending();if(p.notifications&&p.notifications.length)await LN.cancel({notifications:p.notifications.map(n=>({id:n.id}))});
+ const out=[],now=Date.now();
+ for(const m of M){const who=m.pid?' ('+pname(m.pid)+')':'';
+  if(!(m.end&&dl(m.end)<0))for(const t of m.times||[]){const[h,mi]=t.split(':').map(Number);out.push({id:hid(m.id+':'+t),channelId:'meds',title:'💊 '+m.name+who,body:m.dose||'Time for your dose',schedule:{on:{hour:h,minute:mi},allowWhileIdle:true}})}
+  if(m.expiry)for(const r of [30,7,0]){const d=new Date(m.expiry+'T09:00');d.setDate(d.getDate()-r);if(d>now)out.push({id:hid(m.id+':x'+r),channelId:'meds',title:'Medicine expiry',body:m.name+who+(r?' expires in '+r+' days':' expires today'),schedule:{at:d,allowWhileIdle:true}})}}
+ if(out.length)await LN.schedule({notifications:out.slice(0,400)})}catch(e){console.log(e)}}
+const BK={get:()=>({freq:'weekly',keep:5,last:0,...ls.get('bk',{})}),set:o=>ls.set('bk',{...BK.get(),...o})},BDIR='HomeMeds';
+const stamp=()=>{const d=new Date();return fd(d)+'_'+String(d.getHours()).padStart(2,'0')+String(d.getMinutes()).padStart(2,'0')};
+const payload=()=>JSON.stringify({app:'home-meds',v:1,at:new Date().toISOString(),people:P,meds:M});
+async function dlf(n,t,m){const FS=PL('Filesystem'),SH=PL('Share');
+ if(NAT&&FS&&SH){try{await FS.writeFile({path:n,data:t,directory:'CACHE',encoding:'utf8'});const u=await FS.getUri({path:n,directory:'CACHE'});await SH.share({title:n,url:u.uri,dialogTitle:'Save or send to…'})}catch(e){alert('Export failed: '+(e.message||e))}return}
+ const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([t],{type:m}));a.download=n;a.click()}
+async function backupNow(silent){const FS=PL('Filesystem');
+ if(!NAT||!FS){if(!silent)dlf('homemeds-backup-'+stamp()+'.json',payload(),'application/json');return false}
+ try{try{await FS.requestPermissions()}catch{}
+  const n='homemeds-backup-'+stamp()+'.json';
+  await FS.writeFile({path:BDIR+'/'+n,data:payload(),directory:'DOCUMENTS',encoding:'utf8',recursive:true});
+  const r=await FS.readdir({path:BDIR,directory:'DOCUMENTS'}),fs=r.files.map(f=>f.name||f).filter(f=>/^homemeds-backup-.*\.json$/.test(f)).sort();
+  for(const f of fs.slice(0,Math.max(0,fs.length-BK.get().keep)))await FS.deleteFile({path:BDIR+'/'+f,directory:'DOCUMENTS'});
+  BK.set({last:Date.now()});return n}
+ catch(e){if(!silent)alert('Backup failed: '+(e.message||e)+'\nUse "Send to cloud" instead.');return false}}
+async function autoBackup(){const b=BK.get(),iv={daily:1,weekly:7,monthly:30}[b.freq];if(!NAT||!iv||!(M.length||P.length)||Date.now()-b.last<iv*DAY)return;await backupNow(true)}
+function clean(o){if(!o||!Array.isArray(o.meds))throw 0;const D=/^\d{4}-\d\d-\d\d$/;
+ return{people:(o.people||[]).filter(p=>p&&p.id&&p.name).map(p=>({id:String(p.id),k:'p',name:String(p.name),rel:String(p.rel||''),c:/^#[0-9a-f]{6}$/i.test(p.c)?p.c:''})),
+ meds:o.meds.filter(m=>m&&m.id&&m.name).map(m=>({...m,id:String(m.id),k:'m',pid:m.pid?String(m.pid):'',expiry:D.test(m.expiry)?m.expiry:'',end:D.test(m.end)?m.end:'',times:(Array.isArray(m.times)?m.times:[]).filter(t=>/^\d\d:\d\d$/.test(t)),photos:(Array.isArray(m.photos)?m.photos:[]).filter(p=>/^data:image\//.test(p)),log:(Array.isArray(m.log)?m.log:[]).map(Number).filter(Boolean),done:Object.fromEntries(Object.entries(m.done&&typeof m.done=='object'?m.done:{}).filter(e=>/^\d{4}-\d\d-\d\d \d\d:\d\d$/.test(e[0])&&Number(e[1])).map(e=>[e[0],Number(e[1])]))}))}}
+async function restoreText(t){try{const c=clean(JSON.parse(t));if(!c.meds.length&&!c.people.length)throw 0;if(!confirm('Restore '+c.meds.length+' medicines and '+c.people.length+' people? Same-ID entries are overwritten, others are kept.'))return;for(const i of [...c.people,...c.meds])await put(i);alert('Restored');$('#dlg').close();load()}catch{alert('Invalid or empty backup file')}}
+async function pickBackup(){try{const r=await PL('Filesystem').readdir({path:BDIR,directory:'DOCUMENTS'}),fs=r.files.map(f=>f.name||f).filter(f=>/\.json$/.test(f)).sort().reverse();if(!fs.length)throw 0;
+ $('#dlg').innerHTML='<h3 style="margin-top:0">Choose a backup</h3>'+fs.map(f=>`<button class="btn" style="display:block;width:100%;text-align:left" data-bk="${esc(f)}">${esc(f)}</button>`).join('')+'<button class="btn" id="cl">Back</button>';$('#cl').onclick=settings}catch{alert('No backups found in Documents/'+BDIR)}}
+async function sha(s){if(!(window.crypto&&crypto.subtle))return btoa('hm:'+s);const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode('hm:'+s));return[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')}
+function settings(){const b=BK.get(),has=!!ls.get('pin',''),ok=NAT||'Notification'in window;
+ $('#dlg').innerHTML=`<h3 style="margin-top:0">Settings</h3>
+ <label><input type="checkbox" id="nt" style="width:auto" ${ls.get('notif',false)?'checked':''} ${NAT?'':'disabled'}> Dose &amp; expiry reminders ${NAT?'':'(Android app only)'}</label><br>
+ <button class="btn" id="pn">${has?'🔒 Remove PIN lock':'🔒 Set PIN lock'}</button>
+ <h4 style="margin:12px 0 4px">Backup &amp; restore</h4>
+ <div class="g2"><div><label>Auto-backup</label><select id="bf">${['off','daily','weekly','monthly'].map(o=>`<option ${o==b.freq?'selected':''}>${o}</option>`).join('')}</select></div><div><label>Copies to keep</label><select id="bk">${[3,5,10,20].map(o=>`<option ${o==b.keep?'selected':''}>${o}</option>`).join('')}</select></div></div>
+ <p class="sm">${NAT?'Saved to Documents/HomeMeds (survives uninstall). Last: '+(b.last?new Date(b.last).toLocaleString():'never'):'Auto-backup runs in the Android app.'}</p>
+ <button class="btn p" id="bn">💾 Back up now</button><button class="btn" id="bc">☁️ Send to cloud…</button>${NAT?'<button class="btn" id="br">♻️ Restore from backups</button>':''}<label class="btn" style="display:inline-block">📂 Restore from file<input type="file" id="im" accept=".json,application/json" hidden></label>
+ <p class="sm">Cloud: use "Send to cloud" and pick Google Drive, or point FolderSync/Autosync at Documents/HomeMeds.</p><button class="btn" id="cl">Close</button>`;show();
+ $('#cl').onclick=()=>$('#dlg').close();
+ $('#nt').onchange=async e=>{if(e.target.checked){e.target.checked=(await PL('LocalNotifications').requestPermissions()).display==='granted'}ls.set('notif',e.target.checked);sync()};
+ $('#pn').onclick=async()=>{if(has){if(confirm('Remove PIN lock?')){ls.set('pin','');settings()}}else{const p=prompt('Choose a PIN (4+ digits):');if(p&&p.length>=4){ls.set('pin',await sha(p));settings()}}};
+ $('#bf').onchange=e=>BK.set({freq:e.target.value});$('#bk').onchange=e=>BK.set({keep:+e.target.value});
+ $('#bn').onclick=async()=>{const n=await backupNow();if(n){alert('Saved to Documents/'+BDIR+'/'+n);settings()}};
+ $('#bc').onclick=()=>dlf('homemeds-backup-'+stamp()+'.json',payload(),'application/json');
+ if($('#br'))$('#br').onclick=pickBackup;
+ $('#im').onchange=async e=>{if(e.target.files[0])restoreText(await e.target.files[0].text())}}
+let away=0;const lock=()=>{if(ls.get('pin','')){$('#lk').style.display='flex';$('#pin').value=''}};
+$('#ul').onclick=async()=>{if(await sha($('#pin').value)===ls.get('pin','')){$('#lk').style.display='none'}else{$('#pin').value='';$('#pin').placeholder='Wrong PIN'}};
+document.addEventListener('visibilitychange',()=>{if(document.hidden)away=Date.now();else{if(away&&Date.now()-away>12e4)lock();render()}});
+document.addEventListener('click',e=>{const t=e.target;
+ if(t.id=='addp'){people();return}
+ const tb=t.closest('[data-t]');if(tb){tab=tb.dataset.t;render();return}
+ const tk=t.closest('[data-tk]');if(tk){slot(tk.dataset.tk);return}
+ const pr=t.closest('[data-prn]');if(pr){const m=M.find(x=>x.id==pr.dataset.prn);if(m)take(m,null);return}
+ const pc=t.closest('[data-pc]');if(pc){pf=pc.dataset.pc;tab='meds';render();return}
+ if(t.dataset.p){pf=t.dataset.p;render()}else if(t.dataset.x!==undefined){e.preventDefault();draft.photos.splice(+t.dataset.x,1);phs()}
+ else if(t.dataset.dp){const p=P.find(x=>x.id==t.dataset.dp);if(p&&confirm('Remove '+p.name+'? Their medicines move to Household.'))(async()=>{for(const m of M.filter(m=>m.pid==p.id))await put({...m,pid:''});await del(p.id);await load();people()})()}
+ else if(t.dataset.bk){PL('Filesystem').readFile({path:BDIR+'/'+t.dataset.bk,directory:'DOCUMENTS',encoding:'utf8'}).then(r=>restoreText(r.data)).catch(()=>alert('Could not read that file'))}
+ else{const c=t.closest('[data-id]');if(c&&!$('#dlg').open)detail(c.dataset.id)}});
+document.addEventListener('input',e=>{if(e.target.id=='q'){term=e.target.value;$('#list').innerHTML=medList()}});$('#add').onclick=()=>form();$('#gear').onclick=settings;setInterval(()=>{if(!$('#dlg').open&&tab=='today')render()},60000);
+$('#bell').onclick=()=>{const a=M.flatMap(m=>flags(m).map(f=>m.name+': '+f[1]));alert(a.length?a.join('\n'):'All clear ✅')};
+if(NAT&&PL('App'))PL('App').addListener('backButton',()=>{const d=$('#dlg');if(d.open)d.close();else PL('App').exitApp()});
+if(NAT&&ls.get('notif',null)===null&&PL('LocalNotifications')){PL('LocalNotifications').requestPermissions().then(r=>{ls.set('notif',r.display==='granted');sync()}).catch(()=>{})}
+lock();load();
+</script></body></html>
