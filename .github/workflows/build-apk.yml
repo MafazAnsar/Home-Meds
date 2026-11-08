@@ -21,6 +21,24 @@ jobs:
       - name: Add permissions
         run: |
           sed -i 's#</manifest>#    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>\n    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"/>\n    <uses-permission android:name="android.permission.CAMERA"/>\n    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="32"/>\n    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="32"/>\n    <uses-feature android:name="android.hardware.camera" android:required="false"/>\n</manifest>#; s#<application#<application android:requestLegacyExternalStorage="true"#' android/app/src/main/AndroidManifest.xml
+      - name: Apply app icon
+        run: |
+          pip install pillow
+          python3 - <<'PY'
+          from PIL import Image
+          import os
+          R='android/app/src/main/res'
+          ic=Image.open('meds-icon.png').convert('RGBA'); fg=Image.open('meds-icon-fg.png').convert('RGBA')
+          for d,a,b in [('mdpi',48,108),('hdpi',72,162),('xhdpi',96,216),('xxhdpi',144,324),('xxxhdpi',192,432)]:
+              p=f'{R}/mipmap-{d}'; os.makedirs(p,exist_ok=True)
+              ic.resize((a,a),Image.LANCZOS).save(p+'/ic_launcher.png')
+              ic.resize((a,a),Image.LANCZOS).save(p+'/ic_launcher_round.png')
+              fg.resize((b,b),Image.LANCZOS).save(p+'/ic_launcher_foreground.png')
+          os.makedirs(R+'/mipmap-anydpi-v26',exist_ok=True)
+          for n in ('ic_launcher','ic_launcher_round'):
+              open(f'{R}/mipmap-anydpi-v26/{n}.xml','w').write('<?xml version="1.0" encoding="utf-8"?><adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android"><background android:drawable="@color/app_icon_bg"/><foreground android:drawable="@mipmap/ic_launcher_foreground"/></adaptive-icon>')
+          open(R+'/values/app_icon_bg.xml','w').write('<?xml version="1.0" encoding="utf-8"?><resources><color name="app_icon_bg">#C4572E</color></resources>')
+          PY
       - run: npx cap sync android
       - name: Build debug APK
         run: |
