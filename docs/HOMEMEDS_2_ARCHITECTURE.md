@@ -108,3 +108,48 @@
 - Member removal and device revocation.
 - Backup/restore and fresh install.
 - Android notification permission and exact alarm behavior.
+
+
+## Shared household inventory (core feature — expanded)
+
+### Separation of prescription and physical stock
+- **Medication plan**: member-specific prescribed medicine, dose amount/unit, form, schedule and instruction source.
+- **Inventory item**: household-owned physical stock tracked independently, including medicine/active ingredient label, strength, dosage form, unit (tablet, capsule, mL, etc.), lot/expiry metadata (optional), and current balance derived from its ledger.
+- **Allocation**: a member medication plan may reference an inventory item and an explicitly configured stock-unit quantity per administration. Allocation is not automatic and must be confirmed by the user based on the prescribed instructions and clinician/pharmacist guidance.
+- Inventory belongs to the household, not to a particular member's profile. Household members can share stock when permitted by household role.
+
+### Inventory data model
+#### inventory_items
+- id, household_id, display_name, ingredient_label (optional), strength, dosage_form, stock_unit, created_at, updated_at, archived_at
+- Separate entries for different strengths/forms. Do not merge balances just because labels or ingredients resemble each other.
+
+#### inventory_transactions
+- id, inventory_item_id, household_id, transaction_type, quantity_delta, unit, recorded_at, recorded_by, related_dose_event_id (optional), notes
+- Transaction types: initial, refill, consumption, adjustment, correction.
+- Balance is calculated from the ledger. Transaction idempotency must be enforced for sync.
+
+#### medication_inventory_allocations
+- id, medicine_plan_id, inventory_item_id, stock_units_per_administration, confirmation_note, confirmed_at, confirmed_by, active
+- A plan may be linked to a specific stock item only after explicit configuration. Allocation quantity is not inferred from strength text.
+- Initial implementation may support one allocated inventory item per plan; future allocation across multiple items requires explicit splitting and validation.
+
+### Dose-to-stock behavior
+- Taking a scheduled dose creates a dose event and a corresponding inventory consumption ledger transaction for the configured allocation. Both must be committed atomically locally.
+- Skipping or leaving a dose unconfirmed does not consume stock.
+- Correcting a dose event must reverse/reconcile the prior consumption through ledger correction transactions, never delete ledger entries.
+- PRN recording requires an explicit quantity and uses the same allocation/ledger path when configured.
+- If a plan has no inventory allocation, dose recording remains possible but stock is not silently deducted.
+- If the allocated stock is insufficient, show the balance and allow the dose record without a stock deduction only through an explicit, auditable choice; never block or advise clinical decisions.
+
+### Safety and validation
+- Do not automatically convert strengths, forms, release types, or concentrations into equivalent stock allocations.
+- Label-based matching may assist selection but must never preselect or activate an allocation silently.
+- Explicit user confirmation is required for the allocation and its units.
+- The application is a tracking aid, not a prescribing or dose-calculation system.
+
+### Migration from legacy medicine-level stock
+- Keep legacy medicine-level balances and transaction history readable.
+- Migration creates inventory items only from existing medicine records with tracked stock, using their existing strength/form labels as-is.
+- Create an opening inventory transaction from each legacy balance; preserve original transactions as historical provenance or migrate them with original timestamps and references.
+- Do not automatically link existing medicine schedules to migrated inventory. User must review and confirm allocation.
+- Migration must be idempotent, versioned, and testable against interrupted upgrades.
