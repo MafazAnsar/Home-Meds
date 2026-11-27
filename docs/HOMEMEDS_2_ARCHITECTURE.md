@@ -1,3 +1,5 @@
+> **Status: Superseded draft.** This document reflects an earlier, narrower prototype design. The authoritative proposed product and architecture baseline is [HOMEMEDS_MASTER_BLUEPRINT.md](HOMEMEDS_MASTER_BLUEPRINT.md). Treat this file as historical reference during migration and implementation; where the documents conflict, the master blueprint takes precedence.
+
 # Home-Meds 2.0 — Architecture Blueprint
 
 ## Goals
