@@ -18,7 +18,7 @@ It is a tracking, organization and coordination tool—not a diagnostic, prescri
 3. **Clinically traceable:** Prescription intent, treatment plans and actual events remain distinct.
 4. **Inventory-integrated:** Physical stock is tracked independently and reconciled with actual usage.
 5. **Offline-resilient:** Core workflows remain usable without connectivity.
-6. **Cloud-backed:** The cloud is the authoritative shared state; local data is a cache and pending-operation store.
+6. **Local-first, cloud-optional:** Each device maintains its operational local dataset. Cloud services, when enabled, provide household synchronization, sharing and backup/recovery; core supported workflows do not depend on continuous connectivity.
 7. **Auditable:** Corrections and financial/stock effects are traceable; important history is not silently overwritten.
 8. **Privacy and security first:** Authorization is enforced server-side and tenant boundaries are explicit.
 9. **Incremental delivery:** Changes are phased, with migrations and regression gates.
@@ -77,11 +77,11 @@ This separation is mandatory for data integrity and auditability.
 ### Logical components
 1. **Client/UI:** Modular responsive interface, initially retaining the Capacitor Android wrapper.
 2. **Application/domain layer:** Validated business operations and domain rules independent of presentation.
-3. **Local data layer:** Persistent cache and local workflow data for offline use.
-4. **Operation queue/sync engine:** Durable, idempotent mutations, retry, reconciliation and conflict handling.
-5. **Identity/access layer:** Authentication, household membership, authorization and device/session management.
-6. **Backend/API layer:** Validates requests, permissions, domain invariants and transaction boundaries.
-7. **Relational database:** Authoritative shared state and referential integrity.
+3. **Local data layer:** Persistent operational dataset, repositories, migrations and offline workflows; the cloud is not required for core local operation.
+4. **Sync engine (when cloud is enabled):** Durable, idempotent mutations, retry, reconciliation and conflict handling.
+5. **Optional cloud identity/access layer:** Authentication, household membership, authorization and device/session management for shared cloud features.
+6. **Optional backend/API layer:** Validates requests, permissions, domain invariants and transaction boundaries for shared cloud operations.
+7. **Optional cloud relational database:** Shared state, referential integrity and synchronization metadata when cloud services are enabled.
 8. **Private document storage:** Securely stored prescriptions, reports and attachments.
 9. **Notification services:** Local reminders and server-coordinated household notifications.
 10. **Observability and maintenance:** Error reporting, operational logs, migration monitoring and service health.
@@ -103,7 +103,7 @@ Before adoption, evaluate:
 Realtime is a delivery mechanism, not the synchronization design itself. The system must work when realtime connections are unavailable.
 
 ### Architectural rule
-The cloud is authoritative for accepted shared records. Local clients maintain a durable cache and queue. A queued local change must be visibly distinguished from server-confirmed state where necessary.
+The local database is authoritative for that device's current operational state. Cloud synchronization, when enabled, reconciles shared household records across devices; it is not a prerequisite for local operation. Local changes must remain durable and queued until sync succeeds. Cloud-accepted shared changes and their sync state must be distinguishable from local-only or pending changes.
 
 ## 5. Proposed relational domain model
 
@@ -213,7 +213,7 @@ When a dose event is explicitly recorded and a valid allocation exists, the asso
 ### Reconciliation and reporting
 Provide views for current balances, batch expiry, consumption, purchase history, stock adjustments, wastage and discrepancies. Reconciliation should identify differences rather than silently rewrite them.
 
-## 9. Offline operation and synchronization
+## 9. Offline operation and synchronization (cloud phase)
 
 ### Local mutation lifecycle
 1. Validate operation locally.
@@ -336,7 +336,7 @@ Migration should include a report showing migrated, skipped, duplicate, invalid 
 | Catalogue | Text-oriented | Structured, source-aware catalogue |
 | Dose events | Basic tracking; correction/stock consistency gaps | Auditable, idempotent and transactionally integrated |
 | Inventory | Fragmented legacy and separate inventory concepts | Batch-aware household ledger |
-| Sync | No cloud synchronization | Durable offline queue and conflict policy |
+| Sync | No cloud synchronization | Optional durable cloud-sync queue and conflict policy, designed for later rollout |
 | Documents | Local-only | Private cloud storage and offline support |
 | Vaccination | Not implemented | Dedicated vaccination records and dose-series tracking |
 | Injections | Not implemented as dedicated model | Course and administration tracking |
@@ -367,27 +367,27 @@ Migration should include a report showing migrated, skipped, duplicate, invalid 
 
 **Gate:** Architecture review and explicit baseline approval.
 
-### Stage 1 — Platform foundation
+### Stage 1 — Local platform foundation
 - Modular structure and architecture boundaries
-- Local data layer and schema migration framework
-- Backend and technology decision
-- Authentication
-- Household and membership model
-- Permission design
-- Tenant isolation
+- Robust local operational database evaluation and selection
+- Repository/data-access abstraction
+- Schema migration framework
+- Stable UUIDs and explicit relationships
+- Transactional domain operations
+- Sync-compatible mutation and audit primitives, without deploying cloud
 - CI and automated tests
 
-**Gate:** Security/tenant tests; clean install; migration smoke tests.
+**Gate:** Clean install, persistence, migration, transactional integrity and regression tests.
 
 ### Stage 2 — Family and healthcare foundation
-- Family profiles
+- Family profiles and household structure locally
 - Doctors/providers and clinics
 - Encounters
-- Document metadata and storage
+- Document metadata and local attachment handling
 - Appointments/follow-ups
 - Observation foundation
 
-**Gate:** CRUD, permission, migration and document access regression tests.
+**Gate:** CRUD, persistence, migration and document handling regression tests.
 
 ### Stage 3 — Catalogue and prescription model
 - Catalogue/reference data
@@ -436,19 +436,27 @@ Migration should include a report showing migrated, skipped, duplicate, invalid 
 
 **Gate:** Timeline consistency and cross-module regression.
 
-### Stage 8 — Offline and multi-device hardening
-Offline work may be built earlier as foundations are introduced; this stage focuses on end-to-end reliability.
-- Queue recovery
-- Retry and idempotency
+### Stage 8 — Local backup, export and recovery
+- Reliable local backup/export
+- Restore on clean install or replacement device
+- Backup validation and integrity checks
+- Data portability and recovery documentation
+
+**Gate:** Repeatable export/restore, integrity validation and recovery tests.
+
+### Stage 9 — Optional cloud services, sharing and sync
+- Evaluate and select backend only at this stage
+- Authentication and household membership for shared services
+- Sharing and authorization
+- Sync queue, retry, idempotency and reconciliation
 - Conflict resolution
-- Realtime refresh
 - Device revocation
-- Multi-device tests
-- Offline document strategy
+- Optional cloud backup and recovery
+- Multi-device testing
 
-**Gate:** Disconnection/reconnection, conflict, duplicate and permission tests across real devices.
+**Gate:** Tenant isolation, disconnection/reconnection, conflict, duplicate, permissions, revocation and recovery tests across devices.
 
-### Stage 9 — Intelligence and optimisation
+### Stage 10 — Intelligence and optimisation
 Only after reliable core data:
 - Household consumption trends
 - Expiry and replenishment insights
@@ -520,8 +528,8 @@ A successful build is not functional verification.
 ## 18. Decisions still open
 
 These require deliberate evaluation/review rather than assumptions:
-- Final backend/platform selection
-- Local database choice for Capacitor/Android
+- Backend/platform selection (deferred until the optional cloud phase)
+- Local database choice for Capacitor/Android (evaluate early and document)
 - Catalogue source and update policy
 - Document storage, retention and backup policy
 - Detailed role/permission matrix
