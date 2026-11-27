@@ -19,6 +19,33 @@ jobs:
       - run: npm install
       - run: npx cap add android
       - run: npx cap sync android
+      - name: Configure persistent APK signing
+        env:
+          ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: |
+          test -n "$ANDROID_KEYSTORE_BASE64"
+          echo "$ANDROID_KEYSTORE_BASE64" | base64 --decode > android/app/homemeds-dev.keystore
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path("android/app/build.gradle")
+          s=p.read_text()
+          signing='''    signingConfigs {
+              homemeds {
+                  storeFile file("homemeds-dev.keystore")
+                  storePassword System.getenv("ANDROID_KEYSTORE_PASSWORD")
+                  keyAlias System.getenv("ANDROID_KEY_ALIAS")
+                  keyPassword System.getenv("ANDROID_KEY_PASSWORD")
+              }
+          }
+          '''
+          s=s.replace("    buildTypes {", signing+"    buildTypes {", 1)
+          s=s.replace("        debug {", "        debug {\\n            signingConfig signingConfigs.homemeds", 1)
+          s=s.replace("versionCode 1", "versionCode 2", 1)
+          p.write_text(s)
+          PY
       - run: cd android && chmod +x gradlew && ./gradlew assembleDebug
       - uses: actions/upload-artifact@v4
         with:
