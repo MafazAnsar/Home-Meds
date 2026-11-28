@@ -3,11 +3,11 @@ import { CapacitorSQLite, SQLiteConnection } from '@capacitor-community/sqlite';
 
 const out = document.getElementById('out');
 const runButton = document.getElementById('run');
-const log = (message) => { out.textContent += message + '\\n'; };
+const log = (message) => { out.textContent += message + '\n'; };
 
 runButton.onclick = async () => {
   runButton.disabled = true;
-  out.textContent = 'Running…\\n';
+  out.textContent = 'Running…\n';
   const platform = Capacitor.getPlatform();
   log('Platform: ' + platform);
   if (platform !== 'android') {
