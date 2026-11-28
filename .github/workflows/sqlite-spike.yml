@@ -25,6 +25,13 @@ jobs:
           distribution: temurin
           java-version: 17
       - run: npm install
+      - name: Upload generated package lock for bootstrap
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: homemeds-package-lock-bootstrap
+          path: package-lock.json
+          if-no-files-found: warn
       # Emit structured audit findings before enforcing the gate, so all
       # blocking advisories (including transitive ones) are visible in CI logs.
       - name: Diagnose npm audit findings

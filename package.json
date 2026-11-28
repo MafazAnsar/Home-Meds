@@ -11,10 +11,10 @@
     "@capacitor/local-notifications": "^6.0.0",
     "@capacitor/share": "^6.0.0",
     "@capacitor-community/sqlite": "6.0.2",
-    "vite": "5.4.21"
+    "vite": "8.4.0"
   },
   "overrides": {
-    "tar": "^7.5.21",
+    "tar": "^6.2.1",
     "glob": "^14.0.2",
     "minimatch": "^11.0.1"
   }
