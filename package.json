@@ -3,18 +3,18 @@
   "version": "1.0.0",
   "private": true,
   "dependencies": {
-    "@capacitor/android": "^6.1.0",
-    "@capacitor/app": "^6.0.0",
-    "@capacitor/cli": "^6.1.0",
-    "@capacitor/core": "^6.1.0",
-    "@capacitor/filesystem": "^6.0.0",
-    "@capacitor/local-notifications": "^6.0.0",
-    "@capacitor/share": "^6.0.0",
-    "@capacitor-community/sqlite": "6.0.2",
+    "@capacitor/android": "7.6.11",
+    "@capacitor/app": "7.0.0",
+    "@capacitor/cli": "7.6.11",
+    "@capacitor/core": "7.6.11",
+    "@capacitor/filesystem": "7.0.0",
+    "@capacitor/local-notifications": "7.0.0",
+    "@capacitor/share": "7.0.0",
+    "@capacitor-community/sqlite": "7.0.0",
     "vite": "8.4.0"
   },
   "overrides": {
-    "tar": "^6.2.1",
+    "tar": "7.5.21",
     "glob": "^14.0.2",
     "minimatch": "^11.0.1"
   }
