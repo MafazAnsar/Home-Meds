@@ -13,7 +13,13 @@ document.getElementById('run').onclick=async()=>{
  try{
   db=await sqlite.createConnection('homemeds_spike',false,'no-encryption',1,false);
   await db.open();log('PASS: open/create database');
-  await db.execute('PRAGMA foreign_keys = ON');log('Foreign-key enforcement enabled');
+  await db.execute('PRAGMA foreign_keys = ON');
+  const fkState=await db.query('PRAGMA foreign_keys');
+  if(Number(fkState.values?.[0]?.foreign_keys)!==1)throw Error('foreign key pragma assertion failed');
+  log('PASS: foreign-key enforcement enabled');
+  await db.execute('DROP TABLE IF EXISTS child');
+  await db.execute('DROP TABLE IF EXISTS parent');
+  await db.execute('DROP TABLE IF EXISTS migration_probe');
   await db.execute('CREATE TABLE IF NOT EXISTS parent (id INTEGER PRIMARY KEY, label TEXT NOT NULL)');
   await db.execute('CREATE TABLE IF NOT EXISTS child (id INTEGER PRIMARY KEY, parent_id INTEGER NOT NULL, label TEXT, FOREIGN KEY(parent_id) REFERENCES parent(id))');
   await db.execute('CREATE TABLE IF NOT EXISTS migration_probe (id INTEGER PRIMARY KEY, value TEXT)');
