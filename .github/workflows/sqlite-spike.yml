@@ -25,6 +25,12 @@ jobs:
           distribution: temurin
           java-version: 17
       - run: npm install
+      # Emit structured audit findings before enforcing the gate, so all
+      # blocking advisories (including transitive ones) are visible in CI logs.
+      - name: Diagnose npm audit findings
+        run: |
+          npm audit --json > audit-report.json || true
+          node -e "const a=require('./audit-report.json'); for (const [name,v] of Object.entries(a.vulnerabilities||{})) console.log(JSON.stringify({name,severity:v.severity,range:v.range,fixAvailable:v.fixAvailable,via:v.via.map(x=>typeof x==='string'?x:{title:x.title,url:x.url})}))"
       - run: npm audit --audit-level=high
       - run: npx vite build --config sqlite-spike/vite.config.js
       - run: npx cap add android
